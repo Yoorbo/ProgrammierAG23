@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Clicker</title>
+    <style>
+        #cookie {
+            width: 200px;
+            height: 200px;
+            background: url('cookie.png') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+        }
+
+        #score {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+
+        #reset-button {
+            margin-top: 20px;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Cookie Clicker</h1>
+<div id="cookie"></div>
+<p id="score">Weizen: 0</p>
+<button id="reset-button">Reset</button>
+<button id="upgrade-button-clickpower">Klick Stärke (11 Weizen)</button>
+<button id="upgrade-button-power">Autoklick Stärke (100 Weizen)</button>
+<button id="upgrade-button-interval">Autoklick Interval (100 Weizen)</button>
+
+<script>
+    var clickCount = 0;
+    var autoclickpower = 0;
+    var clickpower = 1;
+    var autoclickinterval = 500;
+
+    // Cookie click event
+    $("#cookie").on("click", function () {
+        clickCount += clickpower;
+        $("#score").text("Weizen: " + clickCount);
+    });
+
+    // Reset button event
+    $("#reset-button").on("click", function () {
+        clickCount = 0;
+        $("#score").text("Weizen: " + clickCount);
+    });
+
+    $("#upgrade-button-power").on("click", function () {
+        const kaufbetrag = (autoclickpower * autoclickpower + 100);
+        if (clickCount >= kaufbetrag) {
+            clickCount -= kaufbetrag;
+            autoclickpower++;
+        } else {
+            window.alert("Nicht genug Weizen, Sie benötigen " + kaufbetrag)
+        }
+        $("#score").text("Weizen: " + clickCount);
+
+        const neu_kaufbetrag = (autoclickpower * autoclickpower + 100);
+        $("#upgrade-button-power").text(`Autoklick Stärke (${neu_kaufbetrag} Weizen)`);
+    });
+
+    $("#upgrade-button-clickpower").on("click", function () {
+        const kaufbetrag = (clickpower * clickpower + 10);
+        if (clickCount >= kaufbetrag) {
+            clickCount -= kaufbetrag;
+            clickpower++;
+        } else {
+            window.alert("Nicht genug Weizen, Sie benötigen " + kaufbetrag)
+        }
+        $("#score").text("Weizen: " + clickCount);
+
+        const neu_kaufbetrag = (clickpower * clickpower + 10);
+        $("#upgrade-button-clickpower").text(`Klick Stärke (${neu_kaufbetrag} Weizen)`);
+    });
+
+    $("#upgrade-button-interval").on("click", function () {
+        const kaufbetrag = ((autoclickinterval - 500) * (autoclickinterval - 500) + 100);
+        if (clickCount >= kaufbetrag) {
+            clickCount -= kaufbetrag;
+            autoclickinterval -= 10;
+        } else {
+            window.alert("Nicht genug Weizen, Sie benötigen " + kaufbetrag)
+        }
+        $("#score").text("Weizen: " + clickCount);
+
+        const neu_kaufbetrag = ((autoclickinterval - 500) * (autoclickinterval - 500) + 100);
+        $("#upgrade-button-interval").text(`Autoklick Intervall (${neu_kaufbetrag} Weizen)`);
+
+        setInterval(function () {
+            clickCount += autoclickpower;
+            $("#score").text("Weizen: " + clickCount);
+        }, autoclickinterval);
+    });
+
+    setInterval(function () {
+        clickCount += autoclickpower;
+        $("#score").text("Weizen: " + clickCount);
+    }, autoclickinterval);
+</script>
+</body>
+</html>
