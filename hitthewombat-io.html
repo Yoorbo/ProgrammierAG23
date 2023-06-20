@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cookie Clicker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
+
+        * {
+            padding: 0;
+            margin: 0;
+            scrollbar-width: none;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        *::-webkit-scrollbar {
+            display: none;
+        }
+
+
+        :root {
+            --polynesian-blue: #054a91ff;
+            --steel-blue: #3e7cb1ff;
+            --vista-blue: #81a4cdff;
+            --alice-blue: #dbe4eeff;
+            --safety-orange: #f17300ff;
+
+            font-size: 2vw;
+        }
+
+        body {
+            background: var(--polynesian-blue);
+            display: flex;
+            justify-items: center;
+            justify-content: center;
+            align-items: center;
+            align-content: center;
+            flex-wrap: wrap;
+
+            color: var(--safety-orange)
+        }
+
+        .dog {
+            width: 12rem;
+            height: 12rem;
+            background: url('mcwolf.webp') no-repeat center center;
+            background-size: contain;
+            cursor: pointer;
+
+            margin-bottom: 0.5rem;
+            margin-right: 12rem;
+            margin-left: 12rem;
+
+            transition: 0.1s ease;
+            transform: translate(1rem, 0);
+        }
+
+        h1 {
+            margin-bottom: 1rem;
+            margin-top: 3rem;
+            flex-basis: 100%;
+            text-align: center;
+        }
+
+        .dog:active {
+            transform: scale(1.1) scaleX(1.2) translate(1rem, 0);
+            filter: saturate(20);
+        }
+
+        .dog.dead {
+            transform: scale(1.1) scaleX(1.2) translate(1rem, 0) rotateX(65deg);
+            filter: saturate(0) contrast(1.2);
+        }
+
+        p {
+            flex-basis: 100%;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        button {
+            border: 2px double var(--steel-blue);
+            color: var(--vista-blue);
+            background: unset;
+
+            cursor: pointer;
+
+            font-size: 1rem;
+            padding: 0.5rem 2rem;
+
+            border-radius: 1rem;
+            flex-basis: 100%;
+            margin: auto auto 1rem;
+            max-width: 60%;
+
+            transition: 0.3s ease;
+        }
+
+        button:hover {
+            background: var(--steel-blue);
+            color: var(--alice-blue);
+        }
+
+        button:active {
+            transform: scale(0.95);
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Hit The Wombat</h1>
+<div class="dog"></div>
+<p><span id="score">Wombats: 0</span><span id="bank">Banked Wombats: 0</span></p>
+<button id="upgrade-button-clickpower">Go to the Gym (11 Wombats)</button>
+<button id="upgrade-button-power">New Wombat Hunter (100 Wombats)</button>
+<button id="upgrade-button-interval">Faster Wombat Hunters (100 Wombats)</button>
+<button id="bank-wombats-button">Put Wombats into Bank</button>
+
+<script>
+    var clickCount = 0;
+    var autoclickpower = 0;
+    var clickpower = 1;
+    var autoclickinterval = 500;
+
+    // Cookie click event
+    $(".dog").on("click", function () {
+        clickCount += clickpower;
+        var audio = new Audio('doghurt.mp4');
+        audio.play();
+        $("#score").text("Wombats: " + clickCount);
+    });
+
+    $("#upgrade-button-power").on("click", function () {
+        const kaufbetrag = (autoclickpower * autoclickpower + 100);
+        if (clickCount >= kaufbetrag) {
+            clickCount -= kaufbetrag;
+            autoclickpower++;
+        } else {
+            window.alert("Nicht genug Wombats, Sie benötigen " + kaufbetrag)
+        }
+        $("#score").text("Wombats: " + clickCount);
+
+        const neu_kaufbetrag = (autoclickpower * autoclickpower + 100);
+        $("#upgrade-button-power").text(`New Wombat Hunter (${neu_kaufbetrag} Wombats)`);
+    });
+
+    $("#upgrade-button-clickpower").on("click", function () {
+        const kaufbetrag = (clickpower * clickpower + 10);
+        if (clickCount >= kaufbetrag) {
+            clickCount -= kaufbetrag;
+            clickpower++;
+        } else {
+            window.alert("Nicht genug Wombats, Sie benötigen " + kaufbetrag)
+        }
+        $("#score").text("Wombats: " + clickCount);
+
+        const neu_kaufbetrag = (clickpower * clickpower + 10);
+        $("#upgrade-button-clickpower").text(`Go to the Gym (${neu_kaufbetrag} Wombats)`);
+    });
+
+    $("#upgrade-button-interval").on("click", function () {
+        const kaufbetrag = ((autoclickinterval - 500) * (autoclickinterval - 500) + 100);
+        if (clickCount >= kaufbetrag) {
+            clickCount -= kaufbetrag;
+            autoclickinterval -= 10;
+        } else {
+            window.alert("Nicht genug Wombats, Sie benötigen " + kaufbetrag)
+        }
+        $("#score").text("Wombats: " + clickCount);
+
+        const neu_kaufbetrag = ((autoclickinterval - 500) * (autoclickinterval - 500) + 100);
+        $("#upgrade-button-interval").text(`Faster Wombat Hunters (${neu_kaufbetrag} Wombats)`);
+
+        setInterval(function () {
+            clickCount += autoclickpower;
+            $("#score").text("Wombats: " + clickCount);
+        }, autoclickinterval);
+    });
+
+    setInterval(function () {
+        clickCount += autoclickpower;
+        $("#score").text("Wombats: " + clickCount);
+    }, autoclickinterval);
+</script>
+</body>
+</html>
